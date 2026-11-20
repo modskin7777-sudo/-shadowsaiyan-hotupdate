@@ -1,4 +1,4 @@
-V 20261120.123739
+V 20261120.123902
 F 11516 619c0e0a res/effect/effice_1310034.atlas
 F 131143 cd477cc8 res/effect/effice_1310034.json
 F 113643 13e6b3bd res/effect/effice_1310034.png
@@ -56,6 +56,7 @@ F 266255 6074a8e5 res/effect/effice_98.png
 F 179 f1cd5f93 res/effect/effice_99.atlas
 F 3371 e3c578ec res/effect/effice_99.json
 F 6735 4c666125 res/effect/effice_99.png
+F 15 6d6ee837 res/hotupdate_test.txt
 F 172013 5f0fe3a0 res/images/face/big_head/big_head_300053.png
 F 141830 e57a4132 res/images/face/big_head/big_head_300054.png
 F 204814 b87e718c res/images/face/big_head/big_head_300055.png
