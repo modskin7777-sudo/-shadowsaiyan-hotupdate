@@ -1,0 +1,3 @@
+# Moi dong 1 duong dan (tuong doi voi android/media/) can XOA khoi may khi cap nhat. Dong bat dau bang # bi bo qua.
+# Vi du:
+# src/client/offline/OldFile.lua

@@ -1,0 +1,36 @@
+{
+"skeleton": { "hash": "wbdkU+10phwxu+ECfgM8grdWvOk", "spine": "2.1.27", "width": 2, "height": 2, "images": "./images/" },
+"bones": [
+	{ "name": "root" }
+],
+"slots": [
+	{ "name": "heidian", "bone": "root", "color": "ffffff00", "attachment": "heidian" }
+],
+"skins": {
+	"default": {
+		"heidian": {
+			"heidian": { "x": -2, "y": 146, "width": 2, "height": 2 }
+		}
+	}
+},
+"events": {
+	"effice_310134": {}
+},
+"animations": {
+	"animation": {
+		"events": [
+			{ "time": 0, "name": "effice_310134" },
+			{ "time": 4.3333, "name": "effice_310134", "string": "hurt_after_fly_shake" },
+			{ "time": 4.7333, "name": "effice_310134", "string": "hurt_after_fly_shake" },
+			{ "time": 5.1333, "name": "effice_310134", "string": "hurt_after_fly_shake" },
+			{ "time": 5.5333, "name": "effice_310134", "string": "hurt_after_fly_shake" },
+			{ "time": 6.1, "name": "effice_310134", "string": "hurt_after_fly_shake" },
+			{ "time": 6.4666, "name": "effice_310134", "string": "kill" },
+			{ "time": 6.5333, "name": "effice_310134", "string": "hurt_after_repel_shake" },
+			{ "time": 6.5666, "name": "effice_310134", "string": "next" },
+			{ "time": 7.4666, "name": "effice_310134", "string": "unkill" },
+			{ "time": 7.6333, "name": "effice_310134" }
+		]
+	}
+}
+}

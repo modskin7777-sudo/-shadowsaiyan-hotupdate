@@ -1,0 +1,165 @@
+
+effice_97.png
+size: 1024,1024
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+dun1
+  rotate: false
+  xy: 2, 646
+  size: 320, 320
+  orig: 320, 320
+  offset: 0, 0
+  index: -1
+dun2
+  rotate: false
+  xy: 2, 324
+  size: 320, 320
+  orig: 320, 320
+  offset: 0, 0
+  index: -1
+dun3
+  rotate: false
+  xy: 324, 646
+  size: 320, 320
+  orig: 320, 320
+  offset: 0, 0
+  index: -1
+dun4
+  rotate: false
+  xy: 2, 2
+  size: 320, 320
+  orig: 320, 320
+  offset: 0, 0
+  index: -1
+dun5
+  rotate: false
+  xy: 324, 324
+  size: 320, 320
+  orig: 320, 320
+  offset: 0, 0
+  index: -1
+dun6
+  rotate: false
+  xy: 646, 646
+  size: 320, 320
+  orig: 320, 320
+  offset: 0, 0
+  index: -1
+dun7
+  rotate: false
+  xy: 324, 2
+  size: 320, 320
+  orig: 320, 320
+  offset: 0, 0
+  index: -1
+dun8
+  rotate: false
+  xy: 646, 324
+  size: 320, 320
+  orig: 320, 320
+  offset: 0, 0
+  index: -1
+dun9
+  rotate: false
+  xy: 646, 2
+  size: 320, 320
+  orig: 320, 320
+  offset: 0, 0
+  index: -1
+
+effice_972.png
+size: 1024,1024
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+dun10
+  rotate: false
+  xy: 2, 646
+  size: 320, 320
+  orig: 320, 320
+  offset: 0, 0
+  index: -1
+dun11
+  rotate: false
+  xy: 2, 324
+  size: 320, 320
+  orig: 320, 320
+  offset: 0, 0
+  index: -1
+dun12
+  rotate: false
+  xy: 324, 646
+  size: 320, 320
+  orig: 320, 320
+  offset: 0, 0
+  index: -1
+dun13
+  rotate: false
+  xy: 2, 2
+  size: 320, 320
+  orig: 320, 320
+  offset: 0, 0
+  index: -1
+dun14
+  rotate: false
+  xy: 324, 324
+  size: 320, 320
+  orig: 320, 320
+  offset: 0, 0
+  index: -1
+dun15
+  rotate: false
+  xy: 646, 646
+  size: 320, 320
+  orig: 320, 320
+  offset: 0, 0
+  index: -1
+dun16
+  rotate: false
+  xy: 324, 2
+  size: 320, 320
+  orig: 320, 320
+  offset: 0, 0
+  index: -1
+dun17
+  rotate: false
+  xy: 646, 324
+  size: 320, 320
+  orig: 320, 320
+  offset: 0, 0
+  index: -1
+dun18
+  rotate: false
+  xy: 646, 2
+  size: 320, 320
+  orig: 320, 320
+  offset: 0, 0
+  index: -1
+
+effice_973.png
+size: 1024,1024
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+dun19
+  rotate: false
+  xy: 2, 324
+  size: 320, 320
+  orig: 320, 320
+  offset: 0, 0
+  index: -1
+dun20
+  rotate: false
+  xy: 2, 2
+  size: 320, 320
+  orig: 320, 320
+  offset: 0, 0
+  index: -1
+dun21
+  rotate: false
+  xy: 324, 324
+  size: 320, 320
+  orig: 320, 320
+  offset: 0, 0
+  index: -1

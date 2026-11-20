@@ -1,0 +1,87 @@
+{
+"skeleton": { "hash": "y0WAF7tQWc7irtIAbzjTMNypIa4", "spine": "2.1.27", "width": 448, "height": 448, "images": "" },
+"bones": [
+	{ "name": "root" },
+	{ "name": "bone", "parent": "root", "scaleX": 1.4, "scaleY": 1.4 }
+],
+"slots": [
+	{ "name": "dun1", "bone": "bone", "attachment": "dun9", "blend": "additive" }
+],
+"skins": {
+	"default": {
+		"dun1": {
+			"dun1": { "width": 320, "height": 320 },
+			"dun2": { "width": 320, "height": 320 },
+			"dun3": { "width": 320, "height": 320 },
+			"dun4": { "width": 320, "height": 320 },
+			"dun5": { "width": 320, "height": 320 },
+			"dun6": { "width": 320, "height": 320 },
+			"dun7": { "width": 320, "height": 320 },
+			"dun8": { "width": 320, "height": 320 },
+			"dun9": { "width": 320, "height": 320 },
+			"dun10": { "width": 320, "height": 320 },
+			"dun11": { "width": 320, "height": 320 },
+			"dun12": { "width": 320, "height": 320 },
+			"dun13": { "width": 320, "height": 320 },
+			"dun14": { "width": 320, "height": 320 },
+			"dun15": { "width": 320, "height": 320 },
+			"dun16": { "width": 320, "height": 320 },
+			"dun17": { "width": 320, "height": 320 },
+			"dun18": { "width": 320, "height": 320 },
+			"dun19": { "width": 320, "height": 320 },
+			"dun20": { "width": 320, "height": 320 },
+			"dun21": { "width": 320, "height": 320 }
+		}
+	}
+},
+"animations": {
+	"standby": {
+		"slots": {
+			"dun1": {
+				"attachment": [
+					{ "time": 0, "name": "dun1" },
+					{ "time": 0.0666, "name": "dun2" },
+					{ "time": 0.1333, "name": "dun3" },
+					{ "time": 0.2, "name": "dun4" },
+					{ "time": 0.2666, "name": "dun5" },
+					{ "time": 0.3333, "name": "dun6" },
+					{ "time": 0.4, "name": "dun7" },
+					{ "time": 0.4666, "name": "dun8" },
+					{ "time": 0.5333, "name": "dun9" },
+					{ "time": 0.6, "name": "dun10" },
+					{ "time": 0.6666, "name": "dun11" },
+					{ "time": 0.7333, "name": "dun12" },
+					{ "time": 0.8, "name": "dun13" },
+					{ "time": 0.8666, "name": "dun14" },
+					{ "time": 0.9333, "name": "dun15" },
+					{ "time": 1, "name": "dun16" },
+					{ "time": 1.0666, "name": "dun17" },
+					{ "time": 1.1333, "name": "dun18" },
+					{ "time": 1.2, "name": "dun19" },
+					{ "time": 1.2666, "name": "dun20" },
+					{ "time": 1.3333, "name": "dun21" }
+				],
+				"color": [
+					{ "time": 0, "color": "ffffff00" },
+					{ "time": 0.1333, "color": "ffffffff", "curve": "stepped" },
+					{ "time": 1.3333, "color": "ffffffff" },
+					{ "time": 1.4333, "color": "ffffff00" }
+				]
+			}
+		},
+		"bones": {
+			"bone": {
+				"rotate": [
+					{ "time": 0, "angle": 0 }
+				],
+				"translate": [
+					{ "time": 0, "x": 0, "y": 0 }
+				],
+				"scale": [
+					{ "time": 0, "x": 1, "y": 1 }
+				]
+			}
+		}
+	}
+}
+}

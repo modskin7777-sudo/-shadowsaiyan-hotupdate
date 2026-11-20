@@ -1,0 +1,313 @@
+
+effect_310014.png
+size: 1024,1024
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+gx/110001
+  rotate: true
+  xy: 717, 731
+  size: 48, 106
+  orig: 52, 110
+  offset: 2, 2
+  index: -1
+gx/110002
+  rotate: true
+  xy: 435, 16
+  size: 51, 116
+  orig: 54, 120
+  offset: 2, 2
+  index: -1
+gx/110003
+  rotate: true
+  xy: 834, 736
+  size: 79, 127
+  orig: 82, 131
+  offset: 2, 2
+  index: -1
+gx/110004
+  rotate: true
+  xy: 587, 706
+  size: 73, 128
+  orig: 76, 131
+  offset: 2, 2
+  index: -1
+gx/110005
+  rotate: false
+  xy: 486, 368
+  size: 71, 126
+  orig: 75, 128
+  offset: 2, 2
+  index: -1
+gx/110006
+  rotate: false
+  xy: 254, 704
+  size: 62, 99
+  orig: 68, 127
+  offset: 2, 10
+  index: -1
+gx/110007
+  rotate: true
+  xy: 825, 715
+  size: 19, 77
+  orig: 24, 81
+  offset: 2, 2
+  index: -1
+gx/MRBODshouji_newAnimation_00
+  rotate: true
+  xy: 2, 211
+  size: 298, 249
+  orig: 388, 340
+  offset: 29, 52
+  index: -1
+gx/MRBODshouji_newAnimation_02
+  rotate: true
+  xy: 585, 396
+  size: 306, 248
+  orig: 388, 340
+  offset: 29, 53
+  index: -1
+gx/MRBODshouji_newAnimation_04
+  rotate: true
+  xy: 2, 511
+  size: 292, 250
+  orig: 388, 340
+  offset: 34, 58
+  index: -1
+gx/MRBODshouji_newAnimation_06
+  rotate: true
+  xy: 253, 197
+  size: 297, 231
+  orig: 388, 340
+  offset: 28, 69
+  index: -1
+gx/MRBODshouji_newAnimation_08
+  rotate: true
+  xy: 334, 704
+  size: 316, 251
+  orig: 388, 340
+  offset: 22, 49
+  index: -1
+gx/MRBODshouji_newAnimation_20
+  rotate: true
+  xy: 230, 5
+  size: 190, 203
+  orig: 388, 340
+  offset: 116, 69
+  index: -1
+gx/bkbz_newAnimation_01
+  rotate: false
+  xy: 835, 508
+  size: 176, 205
+  orig: 291, 291
+  offset: 67, 42
+  index: -1
+gx/bkbz_newAnimation_02
+  rotate: true
+  xy: 2, 14
+  size: 195, 226
+  orig: 291, 291
+  offset: 56, 34
+  index: -1
+gx/bkbz_newAnimation_04
+  rotate: true
+  xy: 587, 781
+  size: 239, 245
+  orig: 291, 291
+  offset: 27, 12
+  index: -1
+gx/q2
+  rotate: true
+  xy: 834, 817
+  size: 203, 184
+  orig: 340, 219
+  offset: 124, 25
+  index: -1
+gx/q3
+  rotate: false
+  xy: 254, 496
+  size: 329, 206
+  orig: 340, 219
+  offset: 9, 6
+  index: -1
+gx/q4
+  rotate: false
+  xy: 2, 805
+  size: 330, 215
+  orig: 340, 219
+  offset: 8, 2
+  index: -1
+gx/q5
+  rotate: false
+  xy: 559, 191
+  size: 305, 203
+  orig: 340, 219
+  offset: 32, 16
+  index: -1
+gx/q6
+  rotate: false
+  xy: 558, 5
+  size: 328, 184
+  orig: 340, 219
+  offset: 9, 17
+  index: -1
+gx/q7
+  rotate: true
+  xy: 866, 286
+  size: 220, 154
+  orig: 340, 219
+  offset: 117, 32
+  index: -1
+gx/qiu1
+  rotate: false
+  xy: 888, 8
+  size: 118, 131
+  orig: 200, 200
+  offset: 32, 38
+  index: -1
+gx/qiu6
+  rotate: true
+  xy: 888, 141
+  size: 143, 128
+  orig: 200, 200
+  offset: 29, 36
+  index: -1
+gx/qiu9
+  rotate: false
+  xy: 435, 69
+  size: 121, 126
+  orig: 200, 200
+  offset: 33, 34
+  index: -1
+
+effect_3100142.png
+size: 1024,1024
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+gx/MRBODshouji_newAnimation_10
+  rotate: false
+  xy: 2, 799
+  size: 268, 223
+  orig: 388, 340
+  offset: 69, 70
+  index: -1
+gx/MRBODshouji_newAnimation_12
+  rotate: false
+  xy: 2, 572
+  size: 261, 225
+  orig: 388, 340
+  offset: 76, 69
+  index: -1
+gx/MRBODshouji_newAnimation_14
+  rotate: true
+  xy: 272, 811
+  size: 211, 241
+  orig: 388, 340
+  offset: 116, 52
+  index: -1
+gx/MRBODshouji_newAnimation_16
+  rotate: true
+  xy: 515, 812
+  size: 210, 219
+  orig: 388, 340
+  offset: 116, 53
+  index: -1
+gx/MRBODshouji_newAnimation_18
+  rotate: false
+  xy: 2, 125
+  size: 210, 217
+  orig: 388, 340
+  offset: 116, 57
+  index: -1
+gx/bkbz_newAnimation_00
+  rotate: false
+  xy: 224, 406
+  size: 141, 164
+  orig: 291, 291
+  offset: 86, 57
+  index: -1
+gx/bkbz_newAnimation_03
+  rotate: false
+  xy: 2, 344
+  size: 220, 226
+  orig: 291, 291
+  offset: 38, 20
+  index: -1
+gx/bkbz_newAnimation_05
+  rotate: false
+  xy: 736, 870
+  size: 167, 152
+  orig: 291, 291
+  offset: 71, 46
+  index: -1
+gx/bkbz_newAnimation_06
+  rotate: false
+  xy: 736, 716
+  size: 167, 152
+  orig: 291, 291
+  offset: 71, 46
+  index: -1
+gx/bkbz_newAnimation_07
+  rotate: false
+  xy: 224, 260
+  size: 155, 144
+  orig: 291, 291
+  offset: 84, 44
+  index: -1
+gx/bkbz_newAnimation_08
+  rotate: false
+  xy: 214, 114
+  size: 155, 144
+  orig: 291, 291
+  offset: 84, 44
+  index: -1
+gx/bkbz_newAnimation_09
+  rotate: false
+  xy: 272, 683
+  size: 155, 126
+  orig: 291, 291
+  offset: 85, 44
+  index: -1
+gx/qiu2
+  rotate: false
+  xy: 429, 682
+  size: 124, 127
+  orig: 200, 200
+  offset: 25, 37
+  index: -1
+gx/qiu3
+  rotate: false
+  xy: 2, 3
+  size: 147, 120
+  orig: 200, 200
+  offset: 21, 41
+  index: -1
+gx/qiu4
+  rotate: true
+  xy: 905, 745
+  size: 147, 113
+  orig: 200, 200
+  offset: 22, 43
+  index: -1
+gx/qiu5
+  rotate: true
+  xy: 371, 118
+  size: 140, 120
+  orig: 200, 200
+  offset: 29, 40
+  index: -1
+gx/qiu7
+  rotate: false
+  xy: 555, 674
+  size: 144, 136
+  orig: 200, 200
+  offset: 24, 32
+  index: -1
+gx/qiu8
+  rotate: true
+  xy: 905, 894
+  size: 128, 117
+  orig: 200, 200
+  offset: 28, 43
+  index: -1
