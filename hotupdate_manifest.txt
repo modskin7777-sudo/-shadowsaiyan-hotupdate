@@ -1,4 +1,4 @@
-V 20261120.123902
+V 20261120.124325
 F 11516 619c0e0a res/effect/effice_1310034.atlas
 F 131143 cd477cc8 res/effect/effice_1310034.json
 F 113643 13e6b3bd res/effect/effice_1310034.png
