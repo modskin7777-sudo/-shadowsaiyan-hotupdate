@@ -137,6 +137,13 @@ function AssetsManager:ctor()
             _instance = self,
             _state = 0,
             _invoke = function(terminal, instance, params)
+                -- [HOTUPDATE] giu man hinh nay cho den khi hot update (GitHub) tai xong roi MOI vao game
+                if HotUpdate ~= nil and HotUpdate.gate ~= nil then
+                    local okg, waiting = pcall(HotUpdate.gate, function()
+                        state_machine.excute("assets_manager_manager_assets_into_login_page", 0, "")
+                    end)
+                    if okg and waiting then return true end
+                end
                 app.load("client.operation.Config")          
                 -- fwin:removeAll()
                 fwin:clean(fwin._view)
@@ -175,6 +182,51 @@ function AssetsManager:ctor()
     init_assets_manager_terminal()
 end
 
+-- [STATUS] Man hinh nen cap nhat truoc day TRANG TRON trong luc lay phien ban / tai version_md5 (khong co UI nao).
+-- Them dong chu trang thai + so giay da cho de biet game dang lam gi. Toan bo la pcall: loi o day khong lam sap game.
+function AssetsManager:setStage(text)
+    self._stageText = text
+    print("[Status] " .. tostring(text))
+end
+
+function AssetsManager:statusStart()
+    if self._statusLabel ~= nil or self._statusDone then return end
+    self._statusT0 = os.time()
+    pcall(function()
+        local size = cc.Director:getInstance():getWinSize()
+        local label = cc.Label:createWithSystemFont("", "Arial", 26)
+        label:setPosition(cc.p(size.width / 2, size.height * 0.14))
+        pcall(function() label:setMaxLineWidth(size.width * 0.9) end)
+        self:addChild(label, 100)
+        self._statusLabel = label
+    end)
+    self:statusTick()
+end
+
+function AssetsManager:statusTick()
+    if self._statusDone then return end
+    pcall(function()
+        local el = os.time() - (self._statusT0 or os.time())
+        if self._statusLabel ~= nil then
+            self._statusLabel:setString(tostring(self._stageText or "Dang kiem tra cap nhat") .. string.rep(".", el % 4) .. "\n" .. el .. " s")
+        end
+    end)
+    fwin:addService({
+        callback = function ( params )
+            self:statusTick()
+        end,
+        delay = 1,
+        params = nil
+    })
+end
+
+function AssetsManager:statusStop()
+    self._statusDone = true
+    if self._statusLabel ~= nil then
+        pcall(function() self._statusLabel:setVisible(false) end)
+    end
+end
+
 function AssetsManager:checkVersionDownload()
     -- [OFFLINE] comprobacion con limite de tiempo ya abortada: no seguir
     if self._offGuard ~= nil and self._offGuard.abort then return end
@@ -186,6 +238,7 @@ function AssetsManager:checkVersionDownload()
         self:offlineGuardAbort("sin informacion de version local")
         return
     end
+    self:setStage("Dang so sanh danh sach tai nguyen")
     if app.lmd5.version ~= app.vmd5.version then
         print("format download files.")
         _ED.resource_package = {}
@@ -215,6 +268,7 @@ function AssetsManager:checkVersionDownload()
         end
         if #_ED.resource_package > 0 then
             if self._offGuard ~= nil then self._offGuard.armed = false end -- [OFFLINE] ya hay decision: el usuario elige en el aviso
+            self:statusStop()
             state_machine.excute("assets_manager_manager", 0, "assets_manager_manager_assets_notice")
         else
             self:offlineVerify()
@@ -254,6 +308,7 @@ function AssetsManager:offlineGuardAbort(why)
     if g == nil or g.abort then return end
     g.abort = true
     g.armed = false
+    self:statusStop()
     self._openDownload = false
     print("[OfflineMock] actualizacion omitida: " .. tostring(why))
     if OfflineMock ~= nil and OfflineMock.noteUpdateAborted ~= nil then
@@ -267,6 +322,7 @@ function AssetsManager:offlineGuardRetry()
     local g = self._offGuard
     if g == nil or g.abort or not g.armed then return end
     g.fails = g.fails + 1
+    self:setStage("Khong ket noi duoc may chu cap nhat, thu lai lan " .. tostring(g.fails))
     local maxFails = (OfflineMock ~= nil and tonumber(OfflineMock.upd_fail_max)) or 3
     if g.fails >= maxFails and os.time() - g.t0 >= 5 then
         self:offlineGuardAbort("sin conexion con el servidor de actualizacion (" .. tostring(g.fails) .. " intentos)")
@@ -285,6 +341,7 @@ end
 
 -- fin de la comprobacion SIN actualizacion pendiente
 function AssetsManager:offlineVerify()
+    self:statusStop()
     if self._offGuard ~= nil then
         -- [OFFLINE] igual que el modo OFFLINE sin actualizacion: directo al login (new_get_server_list lo responde el mock)
         self._offGuard.armed = false
@@ -304,6 +361,7 @@ function AssetsManager:checkDownloadVersion( ... )
         self._assetsManager:deleteVersion()
         
         print("download version_md5.plist.")
+        self:setStage("Dang tai danh sach tai nguyen (version_md5)")
         self._assetsManager:checkUpdate()
         self._openDownload = true
     else
@@ -314,6 +372,7 @@ end
 
 function AssetsManager:getDownloadVersion( ... )
     print("start get download version.")
+    if self._offGuard == nil then self:setStage("Dang lay thong tin phien ban") end
     local package_md5 = "0.0"
     if nil ~= getPackageMd5Param then
         package_md5 = getPackageMd5Param()
@@ -367,7 +426,16 @@ function AssetsManager:getDownloadVersion( ... )
             if self._offGuard ~= nil then
                 self:offlineGuardRetry() -- [OFFLINE] espera 1 s, o abandona si no hay conexion
             else
-                self:getDownloadVersion()
+                -- [STATUS] truoc day thu lai NGAY LAP TUC khong gioi han (vong lap nong khi mat mang) => cho 1 s
+                self._retryCount = (self._retryCount or 0) + 1
+                self:setStage("Khong ket noi duoc may chu cap nhat, thu lai lan " .. tostring(self._retryCount))
+                fwin:addService({
+                    callback = function ( params )
+                        self:getDownloadVersion()
+                    end,
+                    delay = 1,
+                    params = nil
+                })
             end
         end
     end
@@ -480,6 +548,9 @@ function AssetsManager:onEnterTransitionFinish()
         end
     end
 
+    self:setStage("Dang kiem tra cap nhat")
+    self:statusStart()
+
     if nil == app.assets_version_url or #app.assets_version_url <= 0 then
         self:offlineVerify()
     else
@@ -496,6 +567,7 @@ function AssetsManager:onEnterTransitionFinish()
 end
 
 function AssetsManager:onExit()
+    self._statusDone = true
 	state_machine.remove("assets_manager_manager")
     state_machine.remove("assets_manager_manager_assets_verify")
     state_machine.remove("assets_manager_manager_assets_notice")

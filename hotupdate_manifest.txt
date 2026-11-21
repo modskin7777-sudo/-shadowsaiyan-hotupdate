@@ -1,4 +1,4 @@
-V 20261121.045932
+V 20261121.061211
 F 11516 619c0e0a res/effect/effice_1310034.atlas
 F 131143 cd477cc8 res/effect/effice_1310034.json
 F 113643 13e6b3bd res/effect/effice_1310034.png
@@ -315,7 +315,7 @@ F 1456003 3a74c7a5 res/sprite/spirte_310404.json
 F 200087 b0e7aeec res/sprite/spirte_310404.png
 F 231080 7d85c6ab res/sprite/spirte_3104042.png
 F 191696 d5e2a0b6 res/sprite/spirte_3104043.png
-F 21507 e299830f src/client/assets/AssetsManager.lua
+F 24567 2f6f905e src/client/assets/AssetsManager.lua
 F 6056 1e17f763 src/client/assets/AssetsNotice.lua
 F 89530 5139151d src/client/battle/NormalLogic.lua
 F 46165 55b0c2f8 src/client/battle/Ship.lua
@@ -341,7 +341,7 @@ F 27696 ba128924 src/client/offline/BlackBox.lua
 F 28607 1d8cc48e src/client/offline/FriendServer.lua
 F 52582 3260bc06 src/client/offline/Fusion.lua
 F 235020 899ba11f src/client/offline/FusionFx.lua
-F 19498 2198ee48 src/client/offline/HotUpdate.lua
+F 26020 109fa06a src/client/offline/HotUpdate.lua
 F 1069901 d7bf9e05 src/client/offline/LocalServer.lua
 F 241347 ce7b31ab src/client/offline/OfflineMock.lua
 F 124028 a7ad9135 src/client/offline/seed/FusionFx.lua

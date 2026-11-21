@@ -44,6 +44,17 @@ M.log_file       = "hotupdate_log.txt"
 M.off_file       = "hotupdate_off.txt"
 M.ud_key         = "hotupdate_enabled"
 
+-- [BLOCK] Giu man hinh khoi dong (co thanh tien trinh) cho den khi hot update tai xong roi MOI cho vao game.
+M.block_enter    = true                          -- false = chay ngam nhu ban cu (cho 8 giay roi moi kiem tra)
+M.block_delay    = 0.3                           -- bat dau kiem tra ngay khi mo game (che do cho)
+M.stall_secs     = 15                            -- khong co tien trien trong ngan nay giay => cho phep cham man hinh de BO QUA
+M.crc_chunk_block = 98304                        -- che do cho: tinh CRC nhanh hon (co thanh tien trinh che)
+
+M.finished       = false                         -- true khi da xong / loi / bo qua (cua cho mo)
+M._waiters       = {}
+M.p = { phase = "idle", scan_i = 0, scan_n = 0, dl_done = 0, dl_total = 0, bytes_done = 0, bytes_total = 0,
+        t_change = os.time(), ver = nil }
+
 -- ----------------------------------------------------------------------------------------- tien ich
 local bit = rawget(_G, "bit") or rawget(_G, "bit32")
 local fu_get = function() return cc.FileUtils:getInstance() end
@@ -409,18 +420,27 @@ local function stage_scan(dir, files, st, force, done)
 	local todo, i = {}, 0
 	local crc_ok = crc_ready()
 
-	local function next_file()
+	local next_file
+	-- nhuong 1 khung hinh moi 150 file de thanh tien trinh con ve duoc
+	local function step()
+		if i % 150 == 149 then return after(0, next_file) end
+		return next_file()
+	end
+
+	next_file = function()
 		i = i + 1
+		M.p.scan_i = i - 1
+		M.p.t_change = os.time()
 		local f = files[i]
-		if f == nil then done(todo); return end
+		if f == nil then M.p.scan_i = #files; done(todo); return end
 		local dest = dir .. f.path
 		local sz = file_size(dest)
 		if sz == nil or sz ~= f.size then
 			todo[#todo + 1] = f
-			return next_file()
+			return step()
 		end
 		if (not force) and st.applied[f.path] == f.crc then
-			return next_file()
+			return step()
 		end
 		-- cung kich thuoc nhung chua biet noi dung: lan dau / ep kiem tra
 		local ext = string.lower(string.match(f.path, "%.([%w_]+)$") or "")
@@ -436,7 +456,7 @@ local function stage_scan(dir, files, st, force, done)
 		else
 			-- chap nhan (cung kich thuoc) va ghi nho
 			st.applied[f.path] = f.crc
-			return next_file()
+			return step()
 		end
 	end
 	next_file()
@@ -447,6 +467,10 @@ local function stage_download(dir, branch, todo, st, done)
 	local idx, inflight, n_ok, n_fail = 0, 0, 0, 0
 	local total = #todo
 	local completed = false
+	M.p.phase = "download"
+	M.p.dl_total, M.p.dl_done, M.p.bytes_done, M.p.bytes_total = total, 0, 0, 0
+	for _, f in ipairs(todo) do M.p.bytes_total = M.p.bytes_total + f.size end
+	M.p.t_change = os.time()
 	if total == 0 then done(0, 0); return end
 
 	local function complete()
@@ -457,6 +481,8 @@ local function stage_download(dir, branch, todo, st, done)
 
 	local function finish_one()
 		inflight = inflight - 1
+		M.p.dl_done = n_ok + n_fail
+		M.p.t_change = os.time()
 		if idx >= total and inflight == 0 then
 			complete()
 		else
@@ -498,6 +524,7 @@ local function stage_download(dir, branch, todo, st, done)
 				if okw then
 					st.applied[f.path] = f.crc
 					n_ok = n_ok + 1
+					M.p.bytes_done = M.p.bytes_done + f.size
 				else
 					log("GHI LOI", f.path, tostring(err))
 					n_fail = n_fail + 1
@@ -524,14 +551,153 @@ local function stage_download(dir, branch, todo, st, done)
 	M._pump()
 end
 
+-- ----------------------------------------------------------------------------------------- [BLOCK] bang tien trinh + cong cho
+local function pct()
+	local p = M.p
+	if p.phase == "scan" then
+		if p.scan_n <= 0 then return 0 end
+		return 20 * math.min(1, p.scan_i / p.scan_n)
+	elseif p.phase == "download" then
+		local f = 1
+		if p.bytes_total > 0 then f = p.bytes_done / p.bytes_total
+		elseif p.dl_total > 0 then f = p.dl_done / p.dl_total end
+		return 20 + 80 * math.min(1, f)
+	elseif p.phase == "done" then
+		return 100
+	end
+	return 0
+end
+
+local function status_text()
+	local p = M.p
+	if p.phase == "manifest" then
+		return "Đang kiểm tra bản cập nhật…"
+	elseif p.phase == "scan" then
+		return string.format("Đang kiểm tra file… %d/%d", p.scan_i, p.scan_n)
+	elseif p.phase == "download" then
+		return string.format("Đang tải: %d/%d file   (%.1f / %.1f MB)", p.dl_done, p.dl_total,
+			p.bytes_done / 1048576, p.bytes_total / 1048576)
+	end
+	return "Hoàn tất"
+end
+
+local function can_skip()
+	return (os.time() - (M.p.t_change or os.time())) >= M.stall_secs
+end
+
+local function release()
+	local w = M._waiters
+	M._waiters = {}
+	for _, cb in ipairs(w) do pcall(cb) end
+end
+
+local function ui_destroy()
+	local ui = M._ui
+	M._ui = nil
+	if ui == nil then return end
+	pcall(function()
+		if ui.listener ~= nil then cc.Director:getInstance():getEventDispatcher():removeEventListener(ui.listener) end
+	end)
+	pcall(function() ui.root:removeFromParent(true) end)
+end
+
+local function ui_build()
+	local dir = cc.Director:getInstance()
+	local scene = dir:getRunningScene()
+	if scene == nil then return end
+	local vs = dir:getVisibleSize()
+	local vo = dir:getVisibleOrigin()
+	local W, H = vs.width, vs.height
+	local ui = { scene = scene, bw = W * 0.6, bh = 14 }
+	ui.bx, ui.by = (W - ui.bw) / 2, H * 0.5
+
+	ui.root = cc.Node:create()
+	ui.root:setPosition(cc.p(vo.x, vo.y))
+	ui.root:addChild(cc.LayerColor:create(cc.c4b(25, 0, 0, 215), W, H))
+
+	local function label(text, size, y)
+		local lb = cc.Label:createWithSystemFont(text, "Arial", size)
+		lb:setPosition(cc.p(W / 2, y))
+		pcall(function() lb:setMaxLineWidth(W * 0.9) end)
+		ui.root:addChild(lb)
+		return lb
+	end
+	label("CẬP NHẬT DỮ LIỆU", 30, H * 0.62)
+	local back = cc.LayerColor:create(cc.c4b(255, 255, 255, 70), ui.bw, ui.bh)
+	back:setPosition(cc.p(ui.bx, ui.by))
+	ui.root:addChild(back)
+	ui.info = label("", 22, ui.by - 36)
+	ui.hint = label("", 18, ui.by - 78)
+
+	-- nuot cham; chi bo qua khi bi dung lau (mang cham / treo)
+	local listener = cc.EventListenerTouchOneByOne:create()
+	pcall(function() listener:setSwallowTouches(true) end)
+	listener:registerScriptHandler(function(touch, event)
+		if can_skip() then M.skip() end
+		return true
+	end, cc.Handler.EVENT_TOUCH_BEGAN)
+	dir:getEventDispatcher():addEventListenerWithFixedPriority(listener, -2000)
+	ui.listener = listener
+
+	scene:addChild(ui.root, 99999)
+	M._ui = ui
+end
+
+local function ui_update()
+	local scene = cc.Director:getInstance():getRunningScene()
+	if M._ui ~= nil and M._ui.scene ~= scene then ui_destroy() end
+	if M._ui == nil then ui_build() end
+	local ui = M._ui
+	if ui == nil then return end
+	local pc = pct()
+	local text = string.format("%s   %d%%", status_text(), math.floor(pc))
+	ui.info:setString(text)
+	ui.hint:setString(can_skip() and "Mạng chậm — chạm vào màn hình để bỏ qua và vào game" or "")
+	if ui.fill ~= nil then pcall(function() ui.fill:removeFromParent(true) end) end
+	ui.fill = cc.LayerColor:create(cc.c4b(255, 170, 0, 255), math.max(1, math.floor(ui.bw * pc / 100)), ui.bh)
+	ui.fill:setPosition(cc.p(ui.bx, ui.by))
+	ui.root:addChild(ui.fill)
+end
+
+-- true khi dang giu man hinh cho hot update
+function M.isBusy()
+	return M.block_enter and M._started == true and (not M.finished) and (not M._skipped)
+end
+
+-- AssetsManager goi truoc khi vao man dang nhap. true = dang cho (cb se duoc goi khi xong / bo qua); false = vao luon.
+function M.gate(cb)
+	if not M.isBusy() then return false end
+	if #M._waiters == 0 then M._waiters[1] = cb end
+	return true
+end
+
+function M.skip()
+	if M.finished or M._skipped then return end
+	M._skipped = true
+	log("nguoi dung BO QUA cho hot update (phase " .. tostring(M.p.phase) .. ")")
+	ui_destroy()
+	release()
+end
+
+local function finish_all()
+	M.p.phase = "done"
+	M.finished = true
+	ui_destroy()
+	release()
+end
+
 function M.check(force)
 	if M._running then return false end
 	local dir = media_dir()
 	if dir == nil then return false end
 	M._running = true
+	M.finished = false
+	M.p.phase = "manifest"
+	M.p.t_change = os.time()
 	local function stop(msg)
 		M._running = false
 		if msg then log(msg) end
+		finish_all()
 	end
 
 	local okt, errt = pcall(function()
@@ -544,6 +710,8 @@ function M.check(force)
 				return stop("da la ban moi nhat: " .. ver)
 			end
 			log("co phien ban", ver, "(may dang o", tostring(st.version) .. ")", #files, "file, nhanh", branch)
+			M.p.phase, M.p.ver, M.p.scan_n, M.p.scan_i = "scan", ver, #files, 0
+			M.p.t_change = os.time()
 
 			stage_scan(dir, files, st, force, function(todo)
 				log("can tai", #todo, "/", #files, "file")
@@ -562,6 +730,7 @@ function M.check(force)
 						log("XONG: tai", n_ok, "file, xoa", n_del, "-> phien ban", ver)
 						if n_ok > 0 or n_del > 0 then
 							M.restart_needed = true
+							pcall(function() fu_get():purgeCachedEntries() end) -- de file moi tai ve duoc tim thay
 							notify("HOT UPDATE: da cap nhat " .. n_ok .. " file (phien ban " .. ver
 								.. ").\nHay THOAT HAN game roi mo lai de ap dung.", 14)
 						end
@@ -583,12 +752,31 @@ function M.start()
 	if M._started then return end
 	M._started = true
 	local ok, err = pcall(function()
-		if media_dir() == nil then return end
-		if not M.enabled() then log("hot update dang TAT"); return end
-		log("HotUpdate " .. M.version .. " san sang; kiem tra sau " .. M.delay_secs .. " giay")
-		after(M.delay_secs, function() M.check(false) end)
+		if media_dir() == nil then M.finished = true; return end
+		if not M.enabled() then log("hot update dang TAT"); M.finished = true; return end
+		if M.block_enter then
+			CHUNK = M.crc_chunk_block or CHUNK
+			M.p.phase, M.p.t_change = "manifest", os.time()
+			log("HotUpdate " .. M.version .. " san sang; CHE DO CHO (giu man hinh den khi tai xong)")
+			every(0.1, function()
+				if M.finished or M._skipped then ui_destroy(); return true end
+				pcall(ui_update)
+				return false
+			end)
+			after(M.block_delay, function()
+				if not M.check(false) then finish_all() end
+			end)
+		else
+			log("HotUpdate " .. M.version .. " san sang; kiem tra sau " .. M.delay_secs .. " giay")
+			M.finished = true
+			after(M.delay_secs, function() M.check(false) end)
+		end
 	end)
-	if not ok then print("[HotUpdate] LOI start: " .. tostring(err)) end
+	if not ok then
+		print("[HotUpdate] LOI start: " .. tostring(err))
+		M.finished = true
+		pcall(release)
+	end
 end
 
 return M
