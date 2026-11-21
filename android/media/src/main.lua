@@ -56,10 +56,26 @@ pcall(function()
         package.path = p .. "/?.lua;" .. p .. "/?/init.lua;" .. package.path
         L("DUNG: " .. p)
     end
+    -- [MEDIA RES] thu muc res nam canh src (Android/media/<goi>/res). Game goi "images/...", "effect/..." nen can search path nay.
+    local function useRes(c)
+        pcall(function()
+            if string.sub(c, -4) ~= "/src" then return end
+            local rp = string.sub(c, 1, #c - 3) .. "res"
+            if added[rp] then return end
+            local ok = false
+            pcall(function() ok = fu:isDirectoryExist(rp) == true end)
+            if not ok then pcall(function() local f = io.open(rp, "r"); if f then f:close(); ok = true end end) end
+            if not ok then L("khong co res: " .. rp); return end
+            added[rp] = true
+            fu:addSearchPath(rp, true)
+            L("DUNG RES: " .. rp)
+        end)
+    end
     for _, c in ipairs(cands) do
         if dirOk(c) then
             use(c)
             if dirOk(c .. "/src") then use(c .. "/src") end
+            useRes(c)
         else
             L("khong co: " .. c)
         end

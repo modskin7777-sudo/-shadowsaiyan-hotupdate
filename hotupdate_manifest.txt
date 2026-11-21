@@ -1,4 +1,4 @@
-V 20261121.041454
+V 20261121.045932
 F 11516 619c0e0a res/effect/effice_1310034.atlas
 F 131143 cd477cc8 res/effect/effice_1310034.json
 F 113643 13e6b3bd res/effect/effice_1310034.png
@@ -345,7 +345,7 @@ F 19498 2198ee48 src/client/offline/HotUpdate.lua
 F 1069901 d7bf9e05 src/client/offline/LocalServer.lua
 F 241347 ce7b31ab src/client/offline/OfflineMock.lua
 F 124028 a7ad9135 src/client/offline/seed/FusionFx.lua
-F 28596 dd2b47f5 src/frameworks/app.lua
+F 29994 97e74633 src/frameworks/app.lua
 F 26554 c105f32d src/frameworks/network/NetworkAdaptor.lua
 F 54579 495fb943 src/frameworks/support/display.lua
-F 6394 1f488f0c src/main.lua
+F 7179 760b51a9 src/main.lua
