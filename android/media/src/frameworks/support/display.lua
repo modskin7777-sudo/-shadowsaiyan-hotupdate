@@ -411,7 +411,6 @@ end
 local ZZ_SP_KNOWN = {
 	["effect/effice_97.json|effect/effice_97.atlas"] = true,
 	["effect/effice_99.json|effect/effice_99.atlas"] = true,
-	["sprite/spirte_310404.json|sprite/spirte_310404.atlas"] = true,
 }
 -- [v6] cap json|atlas da tao it nhat 1 lan trong phien (chi lan DAU moi ghi dau moc BEGIN/DONE cho hop den)
 local ZZ_SP_SEEN = sp.zz_seen
